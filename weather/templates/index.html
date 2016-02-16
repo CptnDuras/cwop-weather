@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+      <meta charset="UTF-8">
+      <title>Weather</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="{{ url_for('static', filename='components/bootstrap/dist/css/bootstrap.css') }}" />
+      <!-- styles -->
+      <!-- scripts -->
+
+  </head>
+  <body>
+    <div class="container">
+      <h1>Weather</h1>
+      <br>
+
+    </div>
+    <div id="content"></div>
+
+  </body>
+  <script src="{{ url_for('static', filename='components/react/react.js') }}"></script>
+  <script src="{{ url_for('static', filename='components/react/react-dom.js') }}"></script>
+  <script src="{{ url_for('static', filename='components/jquery/dist/jquery.js') }}"></script>
+  <script src="{{ url_for('static', filename='components/bootstrap/dist/js/bootstrap.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/js/main.js') }}"></script>
+</html>
