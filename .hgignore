@@ -21,3 +21,7 @@ syntax: glob
 
 # node stuff
 weather/node_modules
+weather/.bowerrc
+weather/gulpfile.js
+weather/package.json
+weather/bower.json
