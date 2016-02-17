@@ -20,4 +20,4 @@ syntax: glob
 .idea/*
 
 # node stuff
-weather/node_modules*
+weather/node_modules
