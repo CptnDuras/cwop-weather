@@ -1,0 +1,7 @@
+INFLUXDB_HOST = 'localhost'
+INFLUXDB_PORT = 8086
+INFLUXDB_USER = 'weather'
+INFLUXDB_PASSWORD = 'weather_password'
+INFLUXDB_DATABASE = 'weather'
+# INFLUXDB_SSL = True
+# INFLUXDB_VERIFY_SSL = False

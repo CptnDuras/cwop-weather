@@ -2,11 +2,13 @@
 <html>
   <head lang="en">
       <meta charset="UTF-8">
-      <title>Weather</title>
+      <title>{{ title }}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" href="{{ url_for('static', filename='components/bootstrap/dist/css/bootstrap.css') }}" />
       <!-- styles -->
-      <!-- scripts -->
+      {% for s in css %}
+      <link href='{{ url_for("static", filename=s) }}' rel="stylesheet" media="screen">
+      {% endfor %}
+
 
   </head>
   <body>
@@ -15,12 +17,32 @@
       <br>
 
     </div>
-    <div id="content"></div>
+    <div id="content">
+            <div class="col-md-5">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Date/Time received:</td>
+                            <td>Temperature:</td>
+                            <td>Barometric Pressure:</td>
+                            <td>Humidity:</td>
+                        </tr>
+                        <tr>
+                            <td><span id="weather_pretty_time" ></span> </td>
+                            <td><span id="weather_temperature"></span>  </td>
+                            <td><span id="weather_barometer"></span>    </td>
+                            <td><span id="weather_humidity"></span>     </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        <button onclick="refresh_weather()">refresh</button>
+    </div>
+    <div id="graph"></div>
 
   </body>
-  <script src="{{ url_for('static', filename='components/react/react.js') }}"></script>
-  <script src="{{ url_for('static', filename='components/react/react-dom.js') }}"></script>
-  <script src="{{ url_for('static', filename='components/jquery/dist/jquery.js') }}"></script>
-  <script src="{{ url_for('static', filename='components/bootstrap/dist/js/bootstrap.js') }}"></script>
-  <script src="{{ url_for('static', filename='scripts/js/main.js') }}"></script>
+    <!-- scripts -->
+  {% for s in scripts %}
+  <script src='{{ url_for("static", filename=s) }}'></script>
+  {% endfor %}
 </html>
