@@ -2,9 +2,9 @@ from weather import app, influx_db
 from weather.methods import get_weather_data, station
 from flask import render_template, Flask, Response
 from pyxley import UILayout
-from pyxley.filters import SelectButton
-from pyxley.charts.mg import LineChart, Figure, ScatterPlot, Histogram
-from pyxley.charts.datatables import DataTable
+# from pyxley.filters import SelectButton
+# from pyxley.charts.mg import LineChart, Figure, ScatterPlot, Histogram
+# from pyxley.charts.datatables import DataTable
 import json
 import gevent
 from gevent.queue import Queue
@@ -12,12 +12,16 @@ from gevent.queue import Queue
 
 TITLE = 'Weather'
 
+title_scripts = [
+
+]
 scripts = [
+    "./components/jquery/dist/jquery.js",
+    "./scripts/js/main.js",
+    "./components/Chart.js/Chart.js",
     "./components/react/react.js",
     "./components/react/react-dom.js",
-    "./components/jquery/dist/jquery.js",
     "./components/bootstrap/dist/js/bootstrap.js",
-    "./scripts/js/main.js"
 ]
 
 css = [
@@ -58,6 +62,7 @@ class ServerSentEvent(object):
 def index():
     return render_template('index.html',
                            title=TITLE,
+                           title_scripts=title_scripts,
                            scripts=scripts,
                            css=css)
 
@@ -81,15 +86,6 @@ def set_weather_station(stationid):
     station = stationid
 
     return station
-
-
-@app.route('/history')
-def history():
-    dbcon = influx_db.connection
-    dbcon.switch_db('weather')
-    tabledata = dbcon.query('select value from weather;')
-    return render_template('index.html', data=tabledata[0])
-
 
 @app.route('/current')
 def get_current_data():
@@ -138,3 +134,48 @@ def subscribe():
             app.subscriptions.remove(q)
 
     return Response(gen(), mimetype="text/event-stream")
+
+
+@app.route('/chart_temp_data')
+def get_chart_temp_data():
+    #     temp_data = {
+    #     labels: ["January", "February", "March", "April", "May", "June", "July"],
+    #     datasets: [
+    #         {
+    #             label: "My First dataset",
+    #             fillColor: "rgba(220,220,220,0.2)",
+    #             strokeColor: "rgba(220,220,220,1)",
+    #             pointColor: "rgba(220,220,220,1)",
+    #             pointStrokeColor: "#fff",
+    #             pointHighlightFill: "#fff",
+    #             pointHighlightStroke: "rgba(220,220,220,1)",
+    #             data: [65, 59, 80, 81, 56, 55, 40]
+    #         }
+    #     ]
+    # };
+    data = get_weather_data(station)
+    sorted_data = sorted(data)
+    out_data = []
+    out_labels = []
+
+
+    for key in sorted_data:
+        out_labels.append(data[key]['pretty_time'])
+        out_data.append(data[key]['temperature'])
+
+
+    out_json = {
+        'labels': out_labels,
+        'datasets': [{
+            'label': "Temperature",
+            'fillColor': "rgba(220,220,220,0.2)",
+            'strokeColor': "rgba(220,220,220,1)",
+            'pointColor': "rgba(220,220,220,1)",
+            'pointStrokeColor': "#fff",
+            'pointHighlightFill': "#fff",
+            'pointHighlightStroke': "rgba(220,220,220,1)",
+            'data': out_data
+        }]
+    }
+
+    return json.dumps(out_json)

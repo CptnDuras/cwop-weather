@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html>
-  <head lang="en">
-      <meta charset="UTF-8">
-      <title>{{ title }}</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <!-- styles -->
-      {% for s in css %}
-      <link href='{{ url_for("static", filename=s) }}' rel="stylesheet" media="screen">
-      {% endfor %}
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>{{ title }}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- styles -->
+        {% for s in css %}
+        <link href='{{ url_for("static", filename=s) }}' rel="stylesheet" media="screen">
+        {% endfor %}
+        <!-- scripts -->
+        {% for s in title_scripts %}
+        <script src='{{ url_for("static", filename=s) }}'></script>
+        {% endfor %}
+    </head>
+    <body onload="refresh_weather()">
+        <div class="container">
+          <h1>Weather</h1>
+          <br>
 
-
-  </head>
-  <body>
-    <div class="container">
-      <h1>Weather</h1>
-      <br>
-
-    </div>
-    <div id="content">
+        </div>
+        <div id="content">
             <div class="col-md-5">
                 <table class="table">
                     <tbody>
@@ -36,13 +38,22 @@
                     </tbody>
                 </table>
             </div>
-        <button onclick="refresh_weather()">refresh</button>
-    </div>
-    <div id="graph"></div>
+            <div class="col-md-1">
+                <button onclick="refresh_weather();">refresh</button>
+            </div>
+        </div>
+        <div id="graph" class="row">
+            <div class="col-md-1">
+                <canvas id="temperatureChart" width="400" height="400"></canvas>
+            </div>
+            <div class="col-md-1">
+                <button onclick="refresh_temp_chart();">refresh</button>
+            </div>
+        </div>
 
-  </body>
-    <!-- scripts -->
-  {% for s in scripts %}
-  <script src='{{ url_for("static", filename=s) }}'></script>
-  {% endfor %}
+        <!-- scripts -->
+        {% for s in scripts %}
+        <script src='{{ url_for("static", filename=s) }}'></script>
+        {% endfor %}
+    </body>
 </html>
