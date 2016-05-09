@@ -2,8 +2,8 @@ import urllib2
 from datetime import datetime
 from time import strptime, mktime
 from bs4 import BeautifulSoup
-from weather import gevent
-my_call = 'KG7NXM'
+
+
 station = 'DW5092'
 
 # 20160215134853
@@ -25,7 +25,7 @@ def get_weather_data(station):
         report['pretty_time'] = datetime.fromtimestamp(mktime(strptime(report['timeReceived'],
                                                                        in_time_format))).strftime(out_time_format)
 
-        data[report['timeReceived']] = report
+        data[int(report['timeReceived'])] = report
 
     # print data
     return data
